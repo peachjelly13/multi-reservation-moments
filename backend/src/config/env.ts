@@ -1,4 +1,4 @@
-import dotenv from 'dotenv'; 
+import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -11,7 +11,7 @@ dotenv.config({
 
 import { z } from "zod";
 import { zpStr } from "./zpStr.ts";
-import {logger} from "./logger.ts";
+import { logger } from "./logger.ts";
 
 // console.log('ENV VARS:', {
 //   user: process.env.user,
@@ -24,15 +24,17 @@ import {logger} from "./logger.ts";
 //only for testing purposes
 
 const envSchema = z.object({
-    connectionString: zpStr(z.string().describe("Postgres database connection string")).default(
-      `postgresql://${process.env.user}:${process.env.password}@${process.env.host}:${process.env.port}/${process.env.database}`
-    ),
-    host:zpStr(z.string().describe("Postgres database host")).default("localhost"),
-    port: z.coerce.number(),
-    user:zpStr(z.string().describe("Postgres database user")),
-    database:zpStr(z.string().describe("Postgres database name")),
-    password:zpStr(z.string().describe("Postgres database password")),
-    PORT:  z.coerce.number()
+  connectionString: zpStr(z.string().describe("Postgres database connection string")).default(
+    `postgresql://${process.env.user}:${process.env.password}@${process.env.host}:${process.env.port}/${process.env.database}`
+  ),
+  host: zpStr(z.string().describe("Postgres database host")).default("localhost"),
+  port: z.coerce.number(),
+  user: zpStr(z.string().describe("Postgres database user")),
+  database: zpStr(z.string().describe("Postgres database name")),
+  password: zpStr(z.string().describe("Postgres database password")),
+  PORT: z.coerce.number(),
+  OPEN_CAGE_API_KEY: zpStr(z.string().describe("OpenCage API key for geocoding service"))
+
 })
 
 const parsed = envSchema.safeParse(process.env);

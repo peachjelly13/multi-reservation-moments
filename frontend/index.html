@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Location Fetcher</title>
+</head>
+<body>
+  <h2>Get My Location</h2>
+  <button onclick="getLocation()">Use My Location</button>
+
+  <p id="status"></p>
+
+  <script>
+    function getLocation() {
+      const status = document.getElementById('status');
+      status.innerText = 'Getting your location...';
+
+      if (!navigator.geolocation) {
+        status.innerText = "Geolocation is not supported by your browser.";
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          status.innerText = `Location fetched! Lat: ${lat}, Lng: ${lng}`;
+
+
+          fetch(`http://localhost:3000/api/location?lat=${lat}&lng=${lng}`)
+            .then(res => res.json())
+            .then(data => {
+              status.innerText = "You are in: " + data.formatted_address;
+            })
+            .catch(err => {
+              status.innerText = "Failed to get address.";
+              console.error(err);
+            });
+        },
+        (err) => {
+          status.innerText = "Location access denied.";
+          console.error(err);
+        }
+      );
+    }
+  </script>
+</body>
+</html>
