@@ -1,10 +1,9 @@
 //This is the main entry point of the application
-import {connectDB} from './db/db.ts';
-import {env} from './config/env.ts'
+import { connectDB } from './db/db.ts';
+import { env } from './config/env.ts'
 
-import express from 'express';
-import {logger} from './config/logger.ts';
-const app = express();
+import { logger } from './config/logger.ts';
+import app from './app.ts'
 
 const PORT = env.PORT
 
